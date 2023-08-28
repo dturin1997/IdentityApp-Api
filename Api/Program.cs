@@ -1,12 +1,15 @@
 using Api.Data;
 using Api.Models;
 using Api.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +48,25 @@ builder.Services.AddIdentityCore<User>(options =>
     .AddUserManager<UserManager<User>>() // make use of UserManager to create users
     .AddDefaultTokenProviders(); // be able to create tokens for email confirmation
 
+// be able to authenticate users using JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            // validate the token based on the key we have provided inside appsettings.development.json JWT:Key
+            ValidateIssuerSigningKey = true,
+            // the issuer singning key based on JWT:Key
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+            // the issuer which in here is the api project url we are using
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            // validate the issuer (who ever is issuing the JWT)
+            ValidateIssuer = true,
+            // don't validate audience (angular side)
+            ValidateAudience = false
+        };
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -55,6 +77,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// adding UseAuthentication into our pipeline and this should come before UseAuthorization
+// Authentication verifies the identity of a user or service, and authorization determines their access rights.
+app.UseAuthentication();
 
 app.UseAuthorization();
 
