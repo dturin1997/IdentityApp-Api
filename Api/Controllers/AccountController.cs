@@ -1,12 +1,9 @@
 ﻿using Api.DTOs.Account;
 using Api.Models;
 using Api.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Api.Controllers
