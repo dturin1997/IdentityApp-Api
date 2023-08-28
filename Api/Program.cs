@@ -1,5 +1,6 @@
 using Api.Data;
 using Api.Models;
+using Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,9 @@ builder.Services.AddDbContext<Context>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+// be able to inject JWTService class inside our Controllers
+builder.Services.AddScoped<JWTService>();
 
 // defining our IdentityCore Service
 builder.Services.AddIdentityCore<User>(options =>
