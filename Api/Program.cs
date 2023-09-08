@@ -67,7 +67,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddCors();
+
 var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+app.UseCors(opt =>
+{
+    opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(builder.Configuration["JWT:ClientUrl"]);
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
