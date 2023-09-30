@@ -9,6 +9,11 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [NotFoundComponent, ValidationMessagesComponent],
   imports: [CommonModule, RouterModule, ReactiveFormsModule, HttpClientModule],
-  exports: [RouterModule, ReactiveFormsModule, HttpClientModule],
+  exports: [
+    RouterModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    ValidationMessagesComponent,
+  ],
 })
 export class SharedModule {}

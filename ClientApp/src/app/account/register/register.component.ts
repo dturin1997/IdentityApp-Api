@@ -62,14 +62,19 @@ export class RegisterComponent implements OnInit {
     this.errorMessages = [];
 
     if (this.registerForm.valid) {
-      this.accountService.register(this.registerForm.value).subscribe({
-        next: (response: any) => {
-          console.log(response);
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
+    this.accountService.register(this.registerForm.value).subscribe({
+      next: (response: any) => {
+        console.log(response);
+      },
+      error: (error) => {
+        //console.log(error);
+        if (error.error.errors) {
+          this.errorMessages = error.error.errors;
+        } else {
+          this.errorMessages.push(error.error);
+        }
+      },
+    });
     }
   }
 }
