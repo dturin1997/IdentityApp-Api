@@ -34,20 +34,19 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     this.errorMessages = [];
 
-    //if (this.loginForm.valid) {
+    if (this.loginForm.valid) {
       this.accountService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
-          
+          //console.log(response);
         },
-        error: error => {
+        error: (error) => {
           if (error.error.errors) {
             this.errorMessages = error.error.errors;
           } else {
             this.errorMessages.push(error.error);
           }
-        }
-      })
-   // }
+        },
+      });
+    }
   }
-
 }
