@@ -11,9 +11,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
 
 // Add services to the container.
 
@@ -29,6 +32,7 @@ builder.Services.AddDbContext<Context>(options =>
 
 // be able to inject JWTService class inside our Controllers
 builder.Services.AddScoped<JWTService>();
+builder.Services.AddScoped<EmailService>();
 
 // defining our IdentityCore Service
 builder.Services.AddIdentityCore<User>(options =>
