@@ -16,7 +16,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
+builder.Configuration.AddUserSecrets<Program>();
 
 // Add services to the container.
 
